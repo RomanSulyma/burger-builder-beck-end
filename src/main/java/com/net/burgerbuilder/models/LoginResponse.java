@@ -1,16 +1,15 @@
 package com.net.burgerbuilder.models;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Data
-@RequiredArgsConstructor
-@AllArgsConstructor
 public class LoginResponse {
 
   private String username;
   private String roles;
   private String token;
+  private LocalDateTime expirationTime;
   private String responseMessage;
 }

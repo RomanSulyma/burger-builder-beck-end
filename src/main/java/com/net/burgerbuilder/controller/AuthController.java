@@ -9,6 +9,7 @@ import com.net.burgerbuilder.repository.CustomerRepository;
 import com.net.burgerbuilder.repository.RoleRepository;
 import com.net.burgerbuilder.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,8 +20,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Authentication controllers to signUp and signIn
@@ -35,6 +39,7 @@ public class AuthController {
   private final JwtUtils jwtUtils;
   private final CustomerRepository customerRepository;
   private final RoleRepository roleRepository;
+  private final Environment environment;
   private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
   @PostMapping("/signin")
@@ -45,9 +50,17 @@ public class AuthController {
 
     SecurityContextHolder.getContext().setAuthentication(authentication);
 
-    String jwt = jwtUtils.generateJwtToken(authentication);
+    final String jwt = jwtUtils.generateJwtToken(authentication);
+    final Long expirationTime = Long.valueOf(Objects.requireNonNull(environment.getProperty("token.expiration.time")));
 
-    return ResponseEntity.ok(new LoginResponse(authentication.getName(), authentication.getAuthorities().toString(), jwt, "Login successful"));
+    final LoginResponse loginResponse = new LoginResponse();
+    loginResponse.setUsername(authentication.getName());
+    loginResponse.setRoles(authentication.getAuthorities().toString());
+    loginResponse.setToken(jwt);
+    loginResponse.setExpirationTime(LocalDateTime.now().plusSeconds(expirationTime / 1000));
+    loginResponse.setResponseMessage("Login successful");
+
+    return new ResponseEntity<>(loginResponse, HttpStatus.OK);
   }
 
   @PostMapping("/signup")
@@ -85,10 +98,12 @@ public class AuthController {
     SecurityContextHolder.getContext().setAuthentication(authentication);
 
     final String jwt = jwtUtils.generateJwtToken(authentication);
+    final Long expirationTime = Long.valueOf(Objects.requireNonNull(environment.getProperty("token.expiration.time")));
 
-    loginResponse.setResponseMessage("Bad credentials");
+    loginResponse.setResponseMessage("Login successful");
     loginResponse.setUsername(authentication.getName());
     loginResponse.setRoles(authentication.getAuthorities().toString());
+    loginResponse.setExpirationTime(LocalDateTime.now().plusSeconds(expirationTime / 1000));
     loginResponse.setToken(jwt);
 
     return new ResponseEntity<>(loginResponse, HttpStatus.OK);
