@@ -26,7 +26,6 @@ public class ValidationInputController {
    * @return - validation constraints and regexp
    */
   @RequestMapping(method = RequestMethod.GET, value = "/validation-inputs")
-  @CrossOrigin(origins = "http://localhost:3000")
   public ResponseEntity<List<Rules>> getValidationInputs() {
     return new ResponseEntity<>(rulesService.getValidationInputs(), HttpStatus.OK);
   }

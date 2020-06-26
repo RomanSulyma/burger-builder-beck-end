@@ -29,7 +29,6 @@ import java.util.Objects;
 /**
  * Authentication controllers to signUp and signIn
  */
-@CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/auth")

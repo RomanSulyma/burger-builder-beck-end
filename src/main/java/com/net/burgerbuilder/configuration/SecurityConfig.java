@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 
 /**
@@ -40,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
 
-    http.cors().and().csrf().disable()
+    http.cors().disable().csrf().disable()
           .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
           .exceptionHandling().accessDeniedHandler(accessDeniedHandler).and()
           .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()

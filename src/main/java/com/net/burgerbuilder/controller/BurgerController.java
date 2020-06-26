@@ -15,7 +15,6 @@ import java.util.List;
 /**
  * Controllers to work with current burger and user orders
  */
-@CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 @RestController
 public class BurgerController {

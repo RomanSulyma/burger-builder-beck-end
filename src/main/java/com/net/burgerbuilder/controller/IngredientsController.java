@@ -23,7 +23,6 @@ public class IngredientsController {
    * @return - All ingredients
    */
   @RequestMapping(method = RequestMethod.GET, value = "/ingredients")
-  @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<List<Ingredient>> getIngredients() {
     return new ResponseEntity<>(ingredientService.findAllIngredients(), HttpStatus.OK);
   }
@@ -35,7 +34,6 @@ public class IngredientsController {
    * @return - Ingredient by name
    */
   @RequestMapping(method = RequestMethod.GET, value = "/ingredients/{name}")
-  @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<Ingredient> getIngredientsByName(@PathVariable final String name) {
     return new ResponseEntity<>(ingredientService.findIngredientByName(name), HttpStatus.OK);
   }
