@@ -44,19 +44,19 @@ public class AuthController {
   @PostMapping("/signin")
     public ResponseEntity<LoginResponse> authenticateUser(@RequestBody final LoginRequest loginRequest) {
 
-    Authentication authentication = authenticationManager.authenticate(
+    final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
     SecurityContextHolder.getContext().setAuthentication(authentication);
 
     final String jwt = jwtUtils.generateJwtToken(authentication);
-    final Long expirationTime = Long.valueOf(Objects.requireNonNull(environment.getProperty("token.expiration.time")));
+    final long expirationTime = Long.parseLong(Objects.requireNonNull(environment.getProperty("token.expiration.time.seconds")));
 
     final LoginResponse loginResponse = new LoginResponse();
     loginResponse.setUsername(authentication.getName());
     loginResponse.setRoles(authentication.getAuthorities().toString());
     loginResponse.setToken(jwt);
-    loginResponse.setExpirationTime(LocalDateTime.now().plusSeconds(expirationTime / 1000));
+    loginResponse.setExpirationTime(LocalDateTime.now().plusSeconds(expirationTime).toString());
     loginResponse.setResponseMessage("Login successful");
 
     return new ResponseEntity<>(loginResponse, HttpStatus.OK);
@@ -97,12 +97,12 @@ public class AuthController {
     SecurityContextHolder.getContext().setAuthentication(authentication);
 
     final String jwt = jwtUtils.generateJwtToken(authentication);
-    final Long expirationTime = Long.valueOf(Objects.requireNonNull(environment.getProperty("token.expiration.time")));
+    final long expirationTime = Long.parseLong(Objects.requireNonNull(environment.getProperty("token.expiration.time.seconds")));
 
     loginResponse.setResponseMessage("Login successful");
     loginResponse.setUsername(authentication.getName());
     loginResponse.setRoles(authentication.getAuthorities().toString());
-    loginResponse.setExpirationTime(LocalDateTime.now().plusSeconds(expirationTime / 1000));
+    loginResponse.setExpirationTime(LocalDateTime.now().plusSeconds(expirationTime).toString());
     loginResponse.setToken(jwt);
 
     return new ResponseEntity<>(loginResponse, HttpStatus.OK);

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -19,7 +20,7 @@ import java.util.Date;
 public class JwtUtils {
   private static final Logger LOGGER = LoggerFactory.getLogger(JwtUtils.class);
 
-  @Value("${token.expiration.time}")
+  @Value("${token.expiration.time.seconds}")
   private Integer TOKEN_EXPIRATION_TIME;
 
   @Value("${jwt.secret}")
@@ -31,14 +32,18 @@ public class JwtUtils {
    * @param authentication - Authentication principal
    * @return - JWT token
    */
-  public String generateJwtToken(Authentication authentication) {
+  public String generateJwtToken(final Authentication authentication) {
 
-    MyUserDetails userPrincipal = (MyUserDetails) authentication.getPrincipal();
+    final MyUserDetails userPrincipal = (MyUserDetails) authentication.getPrincipal();
+    final Date expirationTime =
+            java.sql.Timestamp.valueOf(LocalDateTime.now().plusSeconds(TOKEN_EXPIRATION_TIME));
+
+    System.out.println(expirationTime);
 
     return Jwts.builder()
               .setSubject(userPrincipal.getUsername())
               .setIssuedAt(new Date())
-              .setExpiration(new Date((new Date()).getTime() + TOKEN_EXPIRATION_TIME))
+              .setExpiration(expirationTime)
               .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
               .compact();
   }
