@@ -35,8 +35,7 @@ public class JwtUtils {
   public String generateJwtToken(final Authentication authentication) {
 
     final MyUserDetails userPrincipal = (MyUserDetails) authentication.getPrincipal();
-    final Date expirationTime =
-            java.sql.Timestamp.valueOf(LocalDateTime.now().plusSeconds(TOKEN_EXPIRATION_TIME));
+    final Date expirationTime = java.sql.Timestamp.valueOf(LocalDateTime.now().plusSeconds(TOKEN_EXPIRATION_TIME));
 
     System.out.println(expirationTime);
 
