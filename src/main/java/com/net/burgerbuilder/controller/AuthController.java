@@ -20,8 +20,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -102,7 +102,7 @@ public class AuthController {
     loginResponse.setResponseMessage("Login successful");
     loginResponse.setUsername(authentication.getName());
     loginResponse.setRoles(authentication.getAuthorities().toString());
-    loginResponse.setExpirationTime(LocalDateTime.now().plusSeconds(expirationTime).toString());
+    loginResponse.setExpirationTime(LocalDateTime.now().atZone(ZoneId.of("UTC")).plusSeconds(expirationTime).toString());
     loginResponse.setToken(jwt);
 
     return new ResponseEntity<>(loginResponse, HttpStatus.OK);
