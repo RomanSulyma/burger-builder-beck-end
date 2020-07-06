@@ -23,9 +23,6 @@ public class Burger {
   @Column
   private Long totalPrice;
 
-  @Column
-  private Long burgerElementId;
-
   @Column(name = "customer_name")
   private String customerName;
 

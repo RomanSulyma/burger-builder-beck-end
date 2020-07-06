@@ -39,7 +39,6 @@ public class BurgerService {
 
       burger.setIngredients(order.getIngredients());
       burger.setTotalPrice(order.getTotalPrice());
-      burger.setBurgerElementId(order.getBurgerElementId());
       burger.setCustomerName(order.getName());
       burger.setCustomerSurname(order.getSurname());
       burger.setCustomerMiddleName(order.getMiddleName());
@@ -67,7 +66,6 @@ public class BurgerService {
                       order.setBurgerId(burger.getId());
                       order.setIngredients(burger.getIngredients());
                       order.setTotalPrice(burger.getTotalPrice());
-                      order.setBurgerElementId(burger.getBurgerElementId());
                       order.setName(burger.getCustomerName());
                       order.setSurname(burger.getCustomerSurname());
                       order.setMiddleName(burger.getCustomerMiddleName());
@@ -120,7 +118,6 @@ public class BurgerService {
                       order.setBurgerId(burger.getId());
                       order.setIngredients(burger.getIngredients());
                       order.setTotalPrice(burger.getTotalPrice());
-                      order.setBurgerElementId(burger.getBurgerElementId());
                       order.setName(burger.getCustomerName());
                       order.setSurname(burger.getCustomerSurname());
                       order.setMiddleName(burger.getCustomerMiddleName());
